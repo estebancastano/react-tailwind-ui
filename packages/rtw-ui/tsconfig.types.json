@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "stripInternal": true,
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "target": "es2019",
+    "moduleResolution": "bundler",
+    "lib": ["es2019", "dom", "dom.iterable"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": false
+  },
+  "include": ["src/**/*"]
+}
