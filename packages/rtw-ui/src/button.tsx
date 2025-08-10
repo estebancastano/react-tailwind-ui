@@ -27,58 +27,54 @@ const sizeStyles: Record<LibSize, string> = {
   icon: "h-9 w-9",
 }
 
-export type AnchorButtonProps = {
-  href: string
+type BaseButtonProps = {
   variant?: LibVariant
   size?: LibSize
   loading?: boolean
+  disabled?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   className?: string
   children?: React.ReactNode
-} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "children" | "href">
+}
 
-export type NativeButtonProps = {
-  href?: undefined
-  variant?: LibVariant
-  size?: LibSize
-  loading?: boolean
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-  className?: string
-  children?: React.ReactNode
-} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">
+export type AnchorButtonProps = BaseButtonProps &
+  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "children" | "href"> & {
+    href: string
+  }
 
-export type RtwButtonProps = AnchorButtonProps | NativeButtonProps
+export type NativeButtonProps = BaseButtonProps &
+  Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">
+
+export type RtwButtonProps = AnchorButtonProps | (NativeButtonProps & { href?: undefined })
 
 export function RtwButton(props: RtwButtonProps) {
-  // extrae props custom y href; todo lo demás queda en "rest" sin loading/variant/size/…
-  const {
-    variant = "primary",
-    size = "md",
-    loading = false,
-    className,
-    leftIcon,
-    rightIcon,
-    children,
-    // si existe href, será render <a>
-    href,
-    ...rest
-  } = props as any
+  const variant: LibVariant = props.variant ?? "primary"
+  const size: LibSize = props.size ?? "md"
+  const loading = props.loading ?? false
+  const classes = cn(baseBtn, variantStyles[variant], sizeStyles[size], "gap-2", props.className)
 
-  const classes = cn(baseBtn, variantStyles[variant], sizeStyles[size], "gap-2", className)
+  if ("href" in props && props.href) {
+    const {
+      href,
+      // quita props custom para no pasarlas al DOM
+      variant: _v,
+      size: _s,
+      loading: _l,
+      leftIcon,
+      rightIcon,
+      className: _cn,
+      children,
+      disabled,
+      ...anchorProps
+    } = props as AnchorButtonProps
 
-  if (href) {
-    // no pases "disabled" al DOM como atributo de <a>; usa aria-disabled
-    const { disabled, ...anchorProps } = rest as React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-      disabled?: boolean
-    }
-
+    const isDisabled = !!disabled || loading
     return (
       <a
-        href={disabled || loading ? undefined : href}
-        aria-disabled={disabled || loading ? true : undefined}
-        className={cn(classes, (disabled || loading) && "pointer-events-none")}
+        href={isDisabled ? undefined : href}
+        aria-disabled={isDisabled ? true : undefined}
+        className={cn(classes, isDisabled && "pointer-events-none")}
         {...anchorProps}
       >
         {loading ? (
@@ -97,10 +93,23 @@ export function RtwButton(props: RtwButtonProps) {
     )
   }
 
-  // botón nativo: define type="button" por defecto y nunca propagues "loading"
-  const { disabled, type, ...buttonProps } = rest as React.ButtonHTMLAttributes<HTMLButtonElement>
+  const {
+    // quita props custom para no pasarlas al DOM
+    variant: _v,
+    size: _s,
+    loading: _l,
+    leftIcon,
+    rightIcon,
+    className: _cn,
+    children,
+    disabled,
+    type,
+    ...buttonProps
+  } = props as NativeButtonProps
+
+  const isDisabled = !!disabled || loading
   return (
-    <button className={classes} disabled={disabled || loading} type={type ?? "button"} {...buttonProps}>
+    <button className={classes} disabled={isDisabled} type={type ?? "button"} {...buttonProps}>
       {loading ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
