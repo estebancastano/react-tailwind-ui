@@ -4,9 +4,9 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'React Tailwind UI',
+  description: 'Creado con ❤️ por Esteban Castano',
+  generator: 'Esteban Castano',
 }
 
 export default function RootLayout({

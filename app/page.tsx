@@ -21,13 +21,7 @@ export default function Page() {
               </h1>
             </div>
             <div className="flex items-center gap-2">
-              <RtwButton variant="ghost" leftIcon={<Settings className="h-4 w-4" />}>
-                Ajustes
-              </RtwButton>
-              <RtwButton variant="outline" leftIcon={<Download className="h-4 w-4" />}>
-                Descargar
-              </RtwButton>
-              <RtwButton leftIcon={<Send className="h-4 w-4" />}>Empezar</RtwButton>
+              <RtwButton href ="https://www.npmjs.com/package/@estebancdev/react-tailwind-ui" leftIcon={<Send className="h-4 w-4" />}>Empezar</RtwButton>
             </div>
           </div>
         </div>
@@ -134,16 +128,11 @@ export default function Page() {
             </div>
           </RtwCard>
         </div>
-
-        <div className="mt-10 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600 dark:border-gray-800 dark:bg-gray-900/40 dark:text-gray-400">
-          Nota: Esta librería usa React + Tailwind sin CSS-in-JS y es compatible con el App Router de Next.js, una vía
-          recomendada para estilos y componentes modernos [^1].
-        </div>
       </section>
 
       <footer className="border-t border-gray-200 dark:border-gray-800">
         <div className="mx-auto max-w-6xl px-4 py-8 text-sm text-gray-600 dark:text-gray-400">
-          Lista para extraerse y publicarse. Si quieres, la empacamos con tsup y peerDependencies para npm.
+          Hecha con ❤️ por <RtwButton variant="link" href="https://github.com/estebancastano">Esteban Castano</RtwButton>. Contribuciones y mejoras son bienvenidas en <RtwButton variant="link" href="https://github.com/estebancastano/react-tailwind-ui">GitHub</RtwButton>.
         </div>
       </footer>
     </main>
